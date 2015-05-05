@@ -8,5 +8,9 @@
   </head>
   <body>
    <h1> Autores:</h1>
-   <h3> Elena Tudela Gimenez y Berta Montero Garcia</h3>
-   <img src= 
+   <h3> Elena Tudela Giménez y Berta Montero García</h3>
+   <img src= 'images/elena.jpg' width="150" height="206">
+   <img src= 'images/berta.jpg' width="150" height="206">
+  </body>
+</html>
+
