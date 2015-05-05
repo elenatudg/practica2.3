@@ -1,13 +1,20 @@
-//GET /quizes/question
-exports.question = function(req,res) {
-	res.render('quizes/question', {pregunta: 'Capital de Italia'});
+var models = require('../models/models.js');
+//GET /quizes/:id
+exports.show = function(req,res) {
+        models.Quiz.find(req.params.quizId).then(function(quiz) {
+	 res.render('quizes/show', {pregunta: quiz[0].pregunta})
+})
 };
 
-//GET /quizes/answer
+//GET /quizes/:id/answer
 exports.answer = function(req,res) {
-	if (req.query.respuesta === 'Roma'){
-	  res.render('quizes/answer', {respuesta: 'Correctisimo' });
+models.Quiz.find(req.params.quizId).then(function(quiz) {
+	if (req.query.respuesta === quiz.respuesta){
+	  res.render('quizes/answer', 
+               {quiz:quiz,  respuesta: 'Correcto' });
 	} else {
-	  res.render('quizes/answer', {respuesta: 'Incorrectopuapua'});
+	  res.render('quizes/answer',
+                 {quiz:quiz, respuesta: 'Incorrecto'});
 	}
+})
 };
