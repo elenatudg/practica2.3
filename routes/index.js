@@ -17,7 +17,7 @@ router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 router.get('/quizes/new',          quizController.new);
 router.post('/quizes/create',          quizController.create);
 router.get('/quizes/author', function(req,res){
-   res.render('/quizes/author');
+   res.render('quizes/author');
 });
 
 
