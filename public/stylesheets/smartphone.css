@@ -4,5 +4,7 @@ body {background: #333; }
 
 h2 span, section h3        { dispay:none ; }
 body   { font-size:xx-large;}
+input, button {font-size:xx-large;}
 footer, input      { font-size:large}
+:quiz_img {float:none;}
 
