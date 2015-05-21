@@ -89,11 +89,11 @@ exports.new = function(req,res){
 };
 
 //GET /quizes/create
-exports.create = function(req,res,next){
+exports.create = function(req,res){
   req.body.quiz.UserId = req.session.user.id;
-  if(req.files.image){
-    req.body.quiz.image = req.files.image.name;
-  }
+  //if(req.files.image){
+    //req.body.quiz.image = req.files.image.name;
+  //}
  
   var quiz = models.Quiz.build( req.body.quiz);
   
@@ -105,7 +105,8 @@ exports.create = function(req,res,next){
          res.render('quizes/new', {quiz:qiz, errors: err.errors});
       }else{
        quiz //save:guarda en DB campos pregunta y respuesta de quiz
-       .save({fields: ["pregunta","respuesta","UserId","image"]})
+       .save({fields: ["pregunta","respuesta","UserId"]})
+       //.save({fields: ["pregunta","respuesta","UserId","image"]})
        .then( function(){ res.redirect('/quizes')})
       }      //res.redirect: Redireccion HTTP a lista de preguntas
     }
@@ -145,7 +146,7 @@ exports.update = function(req,res) {
 };
 
 // DELETE /quizes/:id
-exports.destroy = function(req, res){
+exports.destroy = function(req, res, next){
    req.quiz.destroy().then( function() {
      res.redirect('/quizes');
    }).catch(function(error){next(error)});

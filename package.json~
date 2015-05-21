@@ -23,6 +23,11 @@
     "pg": "~4.3.0",
     "express-partials": "~0.3.0",
     "sequelize": "~1.7.10",
-    "sqlite3": "~2.2.7"
+    "sqlite3": "~2.2.7",
+    "pg-hstore": "~2.3.2",
+    "hstore": "0.0.1",
+    "express-session": "~1.11.2",
+    "method-override": "~2.3.3",
+    "multer": "~0.1.8"
   }
 }

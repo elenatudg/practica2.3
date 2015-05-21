@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var key = process.env.PASSWORD_ENCRYPTATION_KEY;
+var key = process.env.PASSWORD_ENCRYPTION_KEY;
 
 module.exports = function(sequelize, DataTypes){
    var User = sequelize.define(
@@ -20,7 +20,10 @@ module.exports = function(sequelize, DataTypes){
                          return next('Username ya utilizado');
                       }
                       return next();
-                    }).catch(function (err) {return next(err);});
+                    })
+                    .catch(function (err) {
+                        return next(err);
+                    });
                  }
              }
         },

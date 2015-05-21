@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
 var session = require('express-session');
-
 var routes = require('./routes/index');
 
 var app = express();
@@ -37,7 +36,7 @@ app.use(function(req,res,next){
        req.session.redir = '/';
    }
    
-   //guardar path enn sesiion.redir para despues de login
+   //guardar path enn sesion.redir para despues de login
    if (!req.path.match(/\/login|\/logout|\/user/)) {
       req.session.redir = req.path;
    }

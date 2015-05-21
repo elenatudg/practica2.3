@@ -38,6 +38,29 @@ exports.create = function(req,res) {
     });
 };
 
+
+// Duración de la sesión
+exports.timeout = function (req, res, next){
+    //comprobamos si el usuario esta logeado 
+    if (req.session.user) {
+        //comprobamos si su sesión ha caducado
+        if ((new Date().getTime()-req.session.user.time) > (120000)) {
+            delete req.session.user;
+            req.flash('info', 'Su sesión ha expirado, por favor vuelva a iniciar sesión');
+            res.redirect("/login");
+        }
+        //si no ha caducado inicializamos el tiempo
+        else {
+            req.session.user.time=new Date().getTime();
+            next();
+        }
+    }
+    //si el usuario no esta logeado no pasa nada
+    else {
+        next();
+    }
+} 
+
 //DELETE /logout --Destruir sesion
 exports.destroy= function(req,res) {
    delete req.session.user;
