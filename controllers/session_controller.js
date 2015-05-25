@@ -44,9 +44,8 @@ exports.timeout = function (req, res, next){
     //comprobamos si el usuario esta logeado 
     if (req.session.user) {
         //comprobamos si su sesión ha caducado
-        if ((new Date().getTime()-req.session.user.time) > (5000)) {
+        if ((new Date().getTime()-req.session.user.time) > (120*1000)) {
             delete req.session.user;
-            //req.flash('info', 'Su sesión ha expirado, por favor vuelva a iniciar sesión');
             res.redirect("/login");
         }
         //si no ha caducado inicializamos el tiempo
