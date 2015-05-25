@@ -136,3 +136,24 @@ exports.destroy = function(req, res) {
 };
 
 //  console.log("req.quiz.id: " + req.quiz.id);
+
+//Búsqueda de preguntas
+exports.search = function(req, res, next) {
+
+  var q = req.query.q ||'';
+  var search = "%" + q.replace(" ", '%')+"%";
+
+  models.Quiz
+  .findAll({where: ["pregunta like ?", search]})
+  .then(function(quizes){
+    res.render('quizes/search',{
+      anterior: q,
+      quizes: quizes,
+      errors: []
+    });
+  })
+  .error(function(error){
+    console.log('Error: No puedo buscar en las preguntas.',error);
+    res.redirect('/');
+    });
+};

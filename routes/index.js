@@ -13,6 +13,7 @@ router.get('/', function(req, res) {
 });
 
 // Autoload de comandos con :quizId
+router.get('/quizes/search', quizController.search); //búsqueda de preguntas
 router.param('quizId' , quizController.load); // autoload : quizId
 router.param('commentId', commentController.load);  //autoload :commentId
 router.param('userId', userController.load);   //autoload: userId
