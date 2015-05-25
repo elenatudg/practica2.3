@@ -8,7 +8,7 @@ return sequelize.define(
       },
       respuesta:{
         type: DataTypes.STRING,
-        validate: { notEmpty: {msg: "->Falta respueta"}}
+        validate: { notEmpty: {msg: "->Falta respuesta"}}
       },
       image: {
         type: DataTypes.STRING

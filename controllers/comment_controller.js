@@ -1,81 +1,104 @@
 var models = require('../models/models.js');
 
-//MW que permite acciones solamente si el quiz objeto pertenece al usuario 
-//logeado o si es cuenta admin
-exports.ownershipRequired = function(req,res,next){
-     models.Quiz.find({
+// MW que permite acciones solamente si el quiz al que pertenece el comentario objeto pertenece al usuario logeado o si es cuenta admin
+exports.ownershipRequired = function(req, res, next){
+    models.Quiz.find({
             where: {
-                   id: Number(req.comment.QuizId)
+                  id: Number(req.comment.QuizId)
             }
-          }).then(function(quiz) {
-             if (quiz) {
-                 var objQuizOwner = quiz.UserId;
-                 var logUser = req.session.user.id;
-                 var isAdmin = req.session.user.isAdmin;
+        }).then(function(quiz) {
+            if (quiz) {
+                var objQuizOwner = quiz.UserId;
+                var logUser = req.session.user.id;
+                var isAdmin = req.session.user.isAdmin;
 
-                 console.log(objQuizOwner, logUser, sAdmin);
+                console.log(objQuizOwner, logUser, isAdmin);
 
                 if (isAdmin || objQuizOwner === logUser) {
-                   next();
-                }else{
-                   res.redirect('/');
+                    next();
+                } else {
+                    res.redirect('/');
                 }
-             }else{next(new Error('No existe quizId=' + quizId))}
-           }
-      ).catch(function(error){next(error)});
+            } else{next(new Error('No existe quizId=' + quizId))}
+        }
+    ).catch(function(error){next(error)});
 };
 
-
-//Autoload :id de comentarios
+// Autoload :id de comentarios
 exports.load = function(req, res, next, commentId) {
-   models.Comment.find({
+  models.Comment.find({
             where: {
-                 id: Number(commentId)
+                id: Number(commentId)
             }
-          }).then(function(comment) {
-        if (comment) {
-           req.comment = comment;
-           next();
-         }else{next(new Error('No existe commentId=' +commentId))}
+        }).then(function(comment) {
+      if (comment) {
+        req.comment = comment;
+        next();
+      } else{next(new Error('No existe commentId=' + commentId))}
     }
-   ).catch(function(error){next(error)});
+  ).catch(function(error){next(error)});
 };
 
-//GET /quizes/:quizId/comments/new
-exports.new= function(req,res){
+// GET /quizes/:quizId/comments/new
+exports.new = function(req, res) {
   res.render('comments/new.ejs', {quizid: req.params.quizId, errors: []});
 };
 
 // POST /quizes/:quizId/comments
-exports.create = function(req,res) {
+exports.create = function(req, res) {
   var comment = models.Comment.build(
-   {texto: req.body.comment.texto,
-    QuizId: req.params.quizId
-    });
-
+      { texto: req.body.comment.texto,          
+        QuizId: req.params.quizId
+        });
 
   comment
   .validate()
   .then(
     function(err){
-     if (err) {
-       res.render('commentd/new.ejs', {comment:comment, errors: err.errors});
-    }else{
-      comment // save: guarda en DB campo texto de comment
-      .save()
-      .then( function(){ res.redirect('/quizes/'+req.paramas.quiId)})
-    }   //res.redirect: Redirección HTTP a lista de preguntas
-   }
- ).catch(function(error){next(error)});
-
+      if (err) {
+        res.render('comments/new.ejs', {comment: comment, errors: err.errors});
+      } else {
+        comment // save: guarda en DB campo texto de comment
+        .save()
+        .then( function(){ res.redirect('/quizes/'+req.params.quizId)}) 
+      }      // res.redirect: Redirección HTTP a lista de preguntas
+    }
+  ).catch(function(error){next(error)});
+  
 };
 
 // GET /quizes/:quizId/comments/:commentId/publish
-exports.publish = function(req,res) {
-   req.comment.publicado = true;
+exports.publish = function(req, res) {
+  req.comment.publicado = true;
 
-   req.comment.save( {fields: ["publicado"]})
-     .then(function(){ res.redirect('/quizes/'+req.params.quizId);} )
-     .catch(function(error){next(error)});
+  req.comment.save( {fields: ["publicado"]})
+    .then( function(){ res.redirect('/quizes/'+req.params.quizId);} )
+    .catch(function(error){next(error)});
 
-   };
+};
+
+
+// GET/quizes/statistics
+exports.statistics= function(req,res){
+  var con_comentarios=[];
+  var sin_comentarios;
+  models.Quiz.count().then(function(quizes){
+    models.Comment.findAll(
+      {where:{publicado:true}}).then(function(comments){
+        sin_comentarios=quizes;
+        for(var i=0;i<comments.length;i++){
+          if(con_comentarios[comments[i].QuizId]===undefined){
+            sin_comentarios--;
+          }
+        con_comentarios[comments[i].QuizId]=1;
+        }
+        res.render('quizes/statistics',{quizes:quizes,
+                                       comentarios:comments.length,
+                                       comentariosMedia:comments.length/quizes,
+                                       preguntasSinComentarios: sin_comentarios, 
+                                       preguntasConComentarios: quizes-sin_comentarios,
+                                       errors:[]
+        });
+      });
+  });
+};

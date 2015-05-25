@@ -11,9 +11,11 @@ footer                 { background: #eee; text-align:center;}
 nav span               { margin: 0px 10px 0px 0px;
                          width:100%;
                          display: inline-block;}
+nav{height:350px;}
+section{height:350px;}
 
 #ErrorMsgs             { color: #f61; font-size: smaler}
 .right {float:right;}
-.quiz_img {height: 150 px; float: left;}
+.quiz_img {height: 150px; float: left;}
 
 

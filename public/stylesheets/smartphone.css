@@ -2,9 +2,10 @@ body {background: #333; }
 
 #page-wrap:after { contet: "Smartphone Layout"; }
 
-h2 span, section h3        { dispay:none ; }
+h2 span, section h3  , label.rem       { display:none ; }
 body   { font-size:xx-large;}
 input, button {font-size:xx-large;}
-footer, input      { font-size:large}
-:quiz_img {float:none;}
-
+nav{height:350px;}
+section{height:350px;}
+footer           { font-size: large; }
+.quiz_img { float: none; }
