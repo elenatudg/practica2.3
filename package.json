@@ -23,7 +23,6 @@
     "pg": "^4.1.1",
     "express-partials": "^0.3.0",
     "sequelize": "^2.0.0-rc4",
-    "sqlite3": "~2.2.7",
     "pg-hstore": "2.3.2",
     "hstore": "0.0.1",
     "express-session": "~1.0.4",
